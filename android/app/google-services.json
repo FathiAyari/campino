@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "367821490488",
+    "project_id": "campino-93621",
+    "storage_bucket": "campino-93621.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367821490488:android:248cc1f311cd0bb33f59cd",
+        "android_client_info": {
+          "package_name": "com.example.campyno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367821490488-nk442lrfhsi3pr9ajpnq8emjaujs89sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJPakgIbX5bE5OPMop-vvwd6wYfm71Mu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367821490488-nk442lrfhsi3pr9ajpnq8emjaujs89sl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "367821490488-jf38p0v571jml774j0qro5qufc2ek4ql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.soumayla.myapp00"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367821490488:android:b12bdc08edc122223f59cd",
+        "android_client_info": {
+          "package_name": "com.soumayla.myapp00"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367821490488-lnmkf0crlcbvu7fg1vell56nqr2k7ig3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soumayla.myapp00",
+            "certificate_hash": "e429156f2ef5ca568fabbfee503fea388b474ab9"
+          }
+        },
+        {
+          "client_id": "367821490488-nk442lrfhsi3pr9ajpnq8emjaujs89sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJPakgIbX5bE5OPMop-vvwd6wYfm71Mu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367821490488-nk442lrfhsi3pr9ajpnq8emjaujs89sl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "367821490488-jf38p0v571jml774j0qro5qufc2ek4ql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.soumayla.myapp00"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
