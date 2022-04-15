@@ -1,24 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-import 'forgotpass.dart';
+import '../../Services/AuthServices.dart';
+import '../Forgot_password/forgotpass.dart';
+import '../Sign_up/signup.dart';
+import 'components/infoMessage.dart';
 
 TextEditingController _loginController = TextEditingController();
 TextEditingController _passController = TextEditingController();
 
 final _formkey = GlobalKey<FormState>();
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<SignInScreen> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ]),
                   height: 50,
                   child: TextFormField(
+                    controller: _loginController,
                     validator: (Value) {
                       if (Value!.isEmpty)
                         return "s'il vous plait saisir un email valide ";
@@ -125,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ]),
                   height: 50,
                   child: TextFormField(
+                    controller: _passController,
                     validator: (Value) {
                       if (Value!.isEmpty)
                         return "s'il vous plait saisir un mot de passe valide ";
@@ -169,22 +176,52 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: CupertinoButton(
-                                child: Text('Connexion',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontStyle: FontStyle.italic)),
-                                color: Colors.indigo,
-                                onPressed: () {
-                                  if (_formkey.currentState!.validate()) {}
-                                }))
-                      ],
-                    )),
+                isLoading
+                    ? CircularProgressIndicator()
+                    : Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: CupertinoButton(
+                                    child: Text('Connexion',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontStyle: FontStyle.italic)),
+                                    color: Colors.indigo,
+                                    onPressed: () {
+                                      if (!_formkey.currentState!.validate()) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        AuthServices()
+                                            .signIn("ayarif648@gmail.com",
+                                                "12345673389")
+                                            .then((value) {
+                                          if (value) {
+                                            print("done");
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          } else {
+                                            InfoMessage(
+                                              press: () {
+                                                Get.back();
+                                              },
+                                              lottieFile: "images/error.json",
+                                              action: "Ressayer",
+                                              message:
+                                                  "Merci de vierfier vos données ",
+                                            ).show(context);
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          }
+                                        });
+                                      }
+                                    }))
+                          ],
+                        )),
                 SizedBox(height: 20),
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: 30),
@@ -198,11 +235,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 14,
                                   fontStyle: FontStyle.italic)),
                           color: Colors.black12,
-                          onPressed: () async {
-                            var userCollection = await FirebaseFirestore
-                                .instance
-                                .collection('users');
-                            userCollection.add({"id": 12});
+                          onPressed: () {
+                            Get.to(SignupScreen());
                           },
                         ))
                       ],

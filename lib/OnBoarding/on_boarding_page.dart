@@ -5,7 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:myapp00/OnBoarding/on_boarding_content.dart';
 import 'package:myapp00/OnBoarding/on_boarding_controller.dart';
 
-import '../auth/login.dart';
+import '../Authentication/Sign_in/sign_in.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -110,7 +110,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               onPressed: (currentPage == contentList.length - 1)
                                   ? () {
                                       onBoardingController.check();
-                                      Get.to(LoginScreen());
+                                      Get.to(SignInScreen());
                                     }
                                   : () {
                                       onBoardingController.check();

@@ -7,8 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:myapp00/constants.dart';
 
-import '../OnBoarding/on_boarding_page.dart';
-import '../auth/login.dart';
+import '../../Authentication/Sign_in/sign_in.dart';
+import '../../OnBoarding/on_boarding_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 //TODO:implement initState
     super.initState();
     var timer = Timer(Duration(seconds: 3),
-        () => Get.to(resultSeen == 1 ? LoginScreen() : OnBoardingPage()));
+        () => Get.to(resultSeen == 1 ? SignInScreen() : OnBoardingPage()));
   }
 
   @override
