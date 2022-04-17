@@ -36,7 +36,8 @@ class Cusers {
       "name": userName,
       "email": Email,
       "role": Role,
-      "url": Url
+      "url": Url,
+      "Gsm": Gsm
     };
   }
 }
