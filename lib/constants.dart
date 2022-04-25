@@ -1,6 +1,10 @@
 import 'dart:ui';
 
+import 'package:get_storage/get_storage.dart';
+
 class Constants {
+  static var user = GetStorage().read("user");
+
   static String HomeText = "Bienvenue chez Campino";
   static var screenWidth =
       (window.physicalSize.shortestSide / window.devicePixelRatio);

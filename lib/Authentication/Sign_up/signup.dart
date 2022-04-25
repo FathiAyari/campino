@@ -16,13 +16,6 @@ import '../../constants.dart';
 import '../Sign_in/sign_in.dart';
 import 'alertTask.dart';
 
-final _formkey = GlobalKey<FormState>();
-
-TextEditingController nameController = TextEditingController();
-TextEditingController emailcontroller = TextEditingController();
-TextEditingController gsmController = TextEditingController();
-TextEditingController _passController = TextEditingController();
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -44,6 +37,13 @@ class _SignupScreenState extends State<SignupScreen> {
       check = true;
     });
   }
+
+  final _formkey = GlobalKey<FormState>();
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController gsmController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +338,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                                   .text,
                                                               imageUrl
                                                                   .toString(),
-                                                              "User",
+                                                              "client",
                                                               gsmController
                                                                   .text);
 

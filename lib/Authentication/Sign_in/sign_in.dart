@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -7,15 +9,14 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../Models/Users.dart';
+import '../../OnBoarding/on_boarding_controller.dart';
+import '../../Screens/Admin_screen/views/home_page/home_page_admin.dart';
+import '../../Screens/Client_screen/views/home_page/home_apge_client.dart';
 import '../../Services/AuthServices.dart';
 import '../Forgot_password/forgotpass.dart';
 import '../Sign_up/signup.dart';
 import 'components/infoMessage.dart';
-
-TextEditingController _loginController = TextEditingController();
-TextEditingController _passController = TextEditingController();
-
-final _formkey = GlobalKey<FormState>();
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -25,6 +26,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<SignInScreen> {
+  final _formkey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  OnBoardingController controller = OnBoardingController();
   Future<bool> avoidReturnButton() async {
     showDialog(
         context: context,
@@ -132,7 +137,7 @@ class _LoginScreenState extends State<SignInScreen> {
                         ]),
                     height: 50,
                     child: TextFormField(
-                      controller: _loginController,
+                      controller: emailController,
                       validator: (Value) {
                         if (Value!.isEmpty)
                           return "s'il vous plait saisir un email valide ";
@@ -171,7 +176,7 @@ class _LoginScreenState extends State<SignInScreen> {
                         ]),
                     height: 50,
                     child: TextFormField(
-                      controller: _passController,
+                      controller: passwordController,
                       validator: (Value) {
                         if (Value!.isEmpty)
                           return "s'il vous plait saisir un mot de passe valide ";
@@ -228,16 +233,49 @@ class _LoginScreenState extends State<SignInScreen> {
                                       color: Colors.indigo,
                                       onPressed: () {
                                         if (_formkey.currentState!.validate()) {
-                                          print("e");
                                           setState(() {
                                             isLoading = true;
                                           });
                                           AuthServices()
-                                              .signIn("ayarif648@gmail.com",
-                                                  "123456789")
-                                              .then((value) {
+                                              .signIn(emailController.text,
+                                                  passwordController.text)
+                                              .then((value) async {
                                             if (value) {
-                                              print("done");
+                                              final FirebaseAuth auth =
+                                                  await FirebaseAuth.instance;
+                                              final User? user =
+                                                  await auth.currentUser;
+                                              final uid = user!.uid;
+                                              var UserData =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .get();
+                                              if (Cusers.fromJson(
+                                                          UserData.data()
+                                                              as Map<String,
+                                                                  dynamic>)
+                                                      .Role ==
+                                                  "admin") {
+                                                // test de role
+                                                await controller.RememberAdmin(
+                                                    UserData.data() as Map<
+                                                        String,
+                                                        dynamic>); //.data() pour recuperer le donneées de document
+                                                Get.to(HomePageAdmin());
+                                              } else if (Cusers.fromJson(
+                                                          UserData.data()
+                                                              as Map<String,
+                                                                  dynamic>)
+                                                      .Role ==
+                                                  "client") {
+                                                await controller.RememberClient(
+                                                    UserData.data() as Map<
+                                                        String,
+                                                        dynamic>); //.data() pour recuperer le donneées de document
+                                                Get.to(HomePageClient());
+                                              }
                                               setState(() {
                                                 isLoading = false;
                                               });
@@ -266,13 +304,12 @@ class _LoginScreenState extends State<SignInScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                              child: CupertinoButton(
+                              child: TextButton(
                             child: Text("Besoin d'un nouveau compte?",
                                 style: TextStyle(
                                     color: Colors.indigo,
                                     fontSize: 14,
                                     fontStyle: FontStyle.italic)),
-                            color: Colors.black12,
                             onPressed: () {
                               Get.to(SignupScreen());
                             },

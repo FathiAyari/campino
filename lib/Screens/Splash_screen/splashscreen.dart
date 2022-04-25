@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
+import 'package:myapp00/Authentication/Sign_in/sign_in.dart';
 import 'package:myapp00/constants.dart';
 
-import '../../Authentication/Sign_in/sign_in.dart';
 import '../../OnBoarding/on_boarding_page.dart';
+import '../Admin_screen/views/home_page/home_page_admin.dart';
+import '../Client_screen/views/home_page/home_apge_client.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,12 +20,19 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   var resultSeen = GetStorage().read("seen");
+  var auth = GetStorage().read("auth");
+
+  var type_auth = GetStorage().read("type_auth");
   @override
   void initState() {
-//TODO:implement initState
     super.initState();
-    var timer = Timer(Duration(seconds: 3),
-        () => Get.to(resultSeen == 1 ? SignInScreen() : OnBoardingPage()));
+    var timer = Timer(
+        Duration(seconds: 3),
+        () => Get.to(resultSeen == 1
+            ? (auth == 1
+                ? (type_auth == 1 ? HomePageAdmin() : HomePageClient())
+                : SignInScreen())
+            : OnBoardingPage()));
   }
 
   @override

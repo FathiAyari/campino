@@ -13,6 +13,7 @@ class _CentersState extends State<Centers> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xffe3eaef),
         body: Center(child: Text("centres")),
       ),
     );

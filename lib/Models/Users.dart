@@ -22,21 +22,21 @@ class Cusers {
   factory Cusers.fromJson(Map<String, dynamic>? json) {
     return Cusers(
       uid: json!["uid"],
-      userName: json["name"],
-      Email: json["email"],
-      Role: json["role"],
+      userName: json["userName"],
+      Email: json["Email"],
+      Role: json["Role"],
       Gsm: json["Gsm"],
-      Url: json["url"],
+      Url: json["Url"],
     );
   }
 // from object to json
   Map<String, dynamic> Tojson() {
     return {
       "uid": uid,
-      "name": userName,
-      "email": Email,
-      "role": Role,
-      "url": Url,
+      "userName": userName,
+      "Email": Email,
+      "Role": Role,
+      "Url": Url,
       "Gsm": Gsm
     };
   }

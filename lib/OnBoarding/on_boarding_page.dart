@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:myapp00/OnBoarding/on_boarding_content.dart';
 import 'package:myapp00/OnBoarding/on_boarding_controller.dart';
+import 'package:myapp00/constants.dart';
 
 import '../Authentication/Sign_in/sign_in.dart';
 
@@ -66,10 +67,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   children: List.generate(contentList.length, (int index) {
                     return AnimatedContainer(
                       duration: Duration(milliseconds: 200),
-                      height: size.height * 0.01,
+                      height: Constants.screenHeight * 0.01,
                       width: (index == currentPage)
-                          ? 25
-                          : 10, // condition au lieu de if else
+                          ? Constants.screenWidth * 0.08
+                          : Constants.screenWidth *
+                              0.04, // condition au lieu de if else
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 30),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
@@ -92,7 +94,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(15),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              onBoardingController.check();
+                              Get.to(SignInScreen());
+                            },
                             child: Text(
                               "Ignorer",
                               style: TextStyle(
@@ -109,13 +114,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           child: ElevatedButton(
                               onPressed: (currentPage == contentList.length - 1)
                                   ? () {
-                                      onBoardingController.check();
                                       Get.to(SignInScreen());
                                     }
                                   : () {
                                       onBoardingController.check();
                                       _controller.nextPage(
-                                          duration: Duration(milliseconds: 300),
+                                          duration: Duration(milliseconds: 400),
                                           curve: Curves.easeInOutQuint);
                                     },
                               style: ElevatedButton.styleFrom(

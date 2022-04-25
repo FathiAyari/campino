@@ -13,6 +13,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xffe3eaef),
         body: Center(child: Text("Messages")),
       ),
     );
