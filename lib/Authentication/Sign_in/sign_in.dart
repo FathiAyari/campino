@@ -12,7 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../Models/Users.dart';
 import '../../OnBoarding/on_boarding_controller.dart';
 import '../../Screens/Admin_screen/views/home_page/home_page_admin.dart';
-import '../../Screens/Client_screen/views/home_page/home_apge_client.dart';
+import '../../Screens/Client_screen/views/home_page/home_page_client.dart';
 import '../../Services/AuthServices.dart';
 import '../Forgot_password/forgotpass.dart';
 import '../Sign_up/signup.dart';
@@ -26,10 +26,17 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<SignInScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   final _formkey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   OnBoardingController controller = OnBoardingController();
+
   Future<bool> avoidReturnButton() async {
     showDialog(
         context: context,
@@ -252,6 +259,7 @@ class _LoginScreenState extends State<SignInScreen> {
                                                       .collection('users')
                                                       .doc(uid)
                                                       .get();
+
                                               if (Cusers.fromJson(
                                                           UserData.data()
                                                               as Map<String,

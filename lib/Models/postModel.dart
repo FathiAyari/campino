@@ -2,7 +2,7 @@ class PostModel {
   String owner;
   String ownerImage;
   String image;
-  double description;
+  String description;
   DateTime creationDate;
 
   PostModel({

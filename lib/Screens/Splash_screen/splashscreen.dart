@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
-import 'package:myapp00/Authentication/Sign_in/sign_in.dart';
 import 'package:myapp00/constants.dart';
 
+import '../../Authentication/Sign_in/sign_in.dart';
 import '../../OnBoarding/on_boarding_page.dart';
 import '../Admin_screen/views/home_page/home_page_admin.dart';
-import '../Client_screen/views/home_page/home_apge_client.dart';
+import '../Client_screen/views/home_page/home_page_client.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -57,8 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               Image(
                 image: AssetImage('images/camping.png'),
-                height: 90.0,
-                width: 90.0,
+                height: Constants.screenHeight * 0.1,
+                width: Constants.screenWidth * 0.3,
               ),
               SizedBox(
                 height: size.height * 0.1,
@@ -70,7 +70,8 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(
                 height: size.height * 0.1,
               ),
-              Lottie.asset("images/loading.json", height: 50),
+              Lottie.asset("images/loading.json",
+                  height: Constants.screenHeight * 0.07),
             ])));
   }
 }

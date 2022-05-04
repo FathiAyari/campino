@@ -4,9 +4,11 @@ class CenterModel {
   double langitude;
   DateTime creationDate;
   String adresse;
+  String Gsm;
 
   CenterModel({
     required this.name,
+    required this.Gsm,
     required this.creationDate,
     required this.latitude,
     required this.langitude,
@@ -16,6 +18,7 @@ class CenterModel {
   factory CenterModel.fromJson(Map<String, dynamic> json) {
     return CenterModel(
       name: json["name"],
+      Gsm: json["Gsm"],
       langitude: json["langitude"],
       latitude: json["latitude"],
       creationDate: json["creationDate"].toDate(),
@@ -29,6 +32,7 @@ class CenterModel {
       "langitude": langitude,
       "creationDate": creationDate,
       "adresse": adresse,
+      "Gsm": Gsm,
     };
   }
 }

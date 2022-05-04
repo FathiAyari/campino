@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -23,14 +22,6 @@ class AdminCentersScreen extends StatefulWidget {
 }
 
 class _CentersState extends State<AdminCentersScreen> {
-  Future<Placemark> test(double latitude, double longitude) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(latitude, longitude);
-    var test = await placemarks[0];
-
-    return test;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -157,6 +148,17 @@ class _CentersState extends State<AdminCentersScreen> {
                                           ),
                                           Text(
                                               "Date de création : ${DateFormat('MM/dd/yyyy hh:mm').format(centersList[index].creationDate)}"),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                  "GSM : ${centersList[index].Gsm}"),
+                                              Icon(
+                                                Icons.call,
+                                                color: Colors.green
+                                                    .withOpacity(0.5),
+                                              )
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     )),

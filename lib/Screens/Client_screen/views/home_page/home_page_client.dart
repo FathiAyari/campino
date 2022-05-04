@@ -1,15 +1,22 @@
+import 'dart:io';
+
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp00/Screens/Client_screen/views/centers/centers.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:myapp00/Screens/Client_screen/views/market_place/basket.dart';
 import 'package:myapp00/constants.dart';
-import 'package:myapp00/drawerpage/a_propos_de_nous.dart';
-import 'package:myapp00/drawerpage/notification.dart';
-import 'package:myapp00/home/marketplace.dart';
 
 import '../../../../OnBoarding/on_boarding_controller.dart';
-import '../messages/messages.dart';
+import '../../../messages/Messages.dart';
+import '../about_us/about_us.dart';
+import '../centers_map.dart';
+import '../market_place/marketplace.dart';
+import '../market_place/my_products.dart';
 import '../posts/posts.dart';
+import '../profile/profileScreen.dart';
 
 class HomePageClient extends StatefulWidget {
   @override
@@ -19,8 +26,12 @@ class HomePageClient extends StatefulWidget {
 class _BottomNavBarState extends State<HomePageClient> {
   int currentIndex = 0;
 
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  List<Widget> screens = [Posts(), MarketplaceScreen(), Messages(), Centers()];
+  List<Widget> screens = [
+    Posts(),
+    MarketplaceScreen(),
+    buildMessages(),
+    CentersMap()
+  ];
   static OnBoardingController controller = OnBoardingController();
   List<BottomNavyBarItem> items = [
     BottomNavyBarItem(
@@ -40,41 +51,85 @@ class _BottomNavBarState extends State<HomePageClient> {
         icon: Icon(Icons.location_on),
         title: Text("Centres")),
   ];
+  Widget positive() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.blueAccent),
+      child: TextButton(
+          onPressed: () {
+            exit(0);
+          },
+          child: Text(
+            "Oui",
+            style: TextStyle(color: Colors.white),
+          )),
+    );
+  }
+
+  Widget negative() {
+    return TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text(
+          "Non",
+          style: TextStyle(color: Colors.blueAccent),
+        ));
+  }
+
+  Future<bool> avoidRteurnButton() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text("Vous etes sure de sortir"),
+            actions: [
+              negative(),
+              positive(),
+            ],
+          );
+        });
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Color(0xffe3eaef),
-          appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              leading: Builder(
-                builder: (BuildContext context) {
-                  return IconButton(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: Icon(
-                      Icons.list,
-                      color: Colors.indigo,
-                    ),
-                  );
-                },
-              )),
-          drawer: buildDrawer(context),
-          bottomNavigationBar: BottomNavyBar(
+    return WillPopScope(
+      onWillPop: avoidRteurnButton,
+      child: SafeArea(
+        child: Scaffold(
             backgroundColor: Color(0xffe3eaef),
-            onItemSelected: (int value) {
-              setState(() {
-                currentIndex = value;
-              });
-            },
-            selectedIndex: currentIndex,
-            items: items,
-          ),
-          body: screens[currentIndex]),
+            appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(
+                        Icons.list,
+                        color: Colors.indigo,
+                      ),
+                    );
+                  },
+                )),
+            drawer: buildDrawer(context),
+            bottomNavigationBar: BottomNavyBar(
+              backgroundColor: Color(0xffe3eaef),
+              onItemSelected: (int value) {
+                setState(() {
+                  currentIndex = value;
+                });
+              },
+              selectedIndex: currentIndex,
+              items: items,
+            ),
+            body: screens[currentIndex]),
+      ),
     );
   }
 
   Drawer buildDrawer(BuildContext context) {
+    var user = GetStorage().read("user");
     return Drawer(
       elevation: 36.0,
       child: Container(
@@ -91,19 +146,42 @@ class _BottomNavBarState extends State<HomePageClient> {
                   padding: const EdgeInsets.all(8.0),
                   child: CircleAvatar(
                     radius: Constants.screenHeight * 0.1,
-                    backgroundImage: NetworkImage("${Constants.user['Url']}"),
+                    backgroundImage: NetworkImage("${user['Url']}"),
                   ),
                 ),
                 ListTile(
                   title: Text(
-                    'Mes commandes',
+                    'Mon profile',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                  trailing:
+                      Icon(Icons.account_circle, color: Colors.blueAccent),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.to(ProfileScreen(
+                      uid: user['uid'],
+                    ));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Mon panier',
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                   trailing:
                       Icon(Icons.shopping_cart_sharp, color: Colors.blueAccent),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Mescmd()));
+                    Get.to(Basket());
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Mes produits',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                  trailing: Icon(Icons.list_rounded, color: Colors.blueAccent),
+                  onTap: () {
+                    Get.to(MyProducts());
                   },
                 ),
                 ListTile(
@@ -140,7 +218,8 @@ class _BottomNavBarState extends State<HomePageClient> {
                                   child: TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
-                                      }, child: Text("Non"))),
+                                      },
+                                      child: Text("Non"))),
                               Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),

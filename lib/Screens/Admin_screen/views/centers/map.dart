@@ -30,6 +30,7 @@ class _MapScreenState extends State<MapScreen> {
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController centerNameController = TextEditingController();
+  TextEditingController gsmNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   late double longitude;
@@ -102,7 +103,7 @@ class _MapScreenState extends State<MapScreen> {
                       Get.snackbar(
                           "Campino",
                           "Nom :${data.get("name")}\n"
-                              "Adresse : ${placemarks[0].country}-${placemarks[0].administrativeArea}-${placemarks[0].name}",
+                              "Adresse : ${placemarks[0].country}-${placemarks[0].administrativeArea}-${placemarks[0].name}\n GSM:${data.get("Gsm")}",
                           borderRadius: 20,
                           duration: Duration(seconds: 10),
                           icon:
@@ -145,7 +146,7 @@ class _MapScreenState extends State<MapScreen> {
                                   builder: (context, setState) {
                                 return AlertDialog(
                                   content: Container(
-                                    height: Constants.screenHeight * 0.37,
+                                    height: Constants.screenHeight * 0.45,
                                     child: Column(
                                       children: [
                                         Container(
@@ -155,7 +156,7 @@ class _MapScreenState extends State<MapScreen> {
                                                 padding: EdgeInsets.symmetric(
                                                     vertical:
                                                         Constants.screenHeight *
-                                                            0.02),
+                                                            0.01),
                                                 child: Text(
                                                   " Ajouter un centre ",
                                                   textAlign: TextAlign.center,
@@ -203,6 +204,31 @@ class _MapScreenState extends State<MapScreen> {
                                                         decoration: InputDecoration(
                                                             label: Text(
                                                                 "Nom de centre"),
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20))),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: TextFormField(
+                                                        validator: (value) {
+                                                          if (value!.isEmpty) {
+                                                            return "Champ obligatoire";
+                                                          }
+                                                        },
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        controller:
+                                                            gsmNameController,
+                                                        decoration: InputDecoration(
+                                                            label: Text(
+                                                                "GSM de centre"),
                                                             border: OutlineInputBorder(
                                                                 borderRadius:
                                                                     BorderRadius
@@ -261,6 +287,8 @@ class _MapScreenState extends State<MapScreen> {
                                                                       langitude:
                                                                           double.parse(
                                                                               longitudeController.text),
+                                                                      Gsm: gsmNameController
+                                                                          .text,
                                                                       adresse:
                                                                           '${placemarks[0].administrativeArea}-${placemarks[0].name} ',
                                                                     ).Tojson());

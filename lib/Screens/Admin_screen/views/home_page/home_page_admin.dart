@@ -1,17 +1,13 @@
 import 'dart:io';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:myapp00/constants.dart';
-import 'package:myapp00/drawerpage/a_propos_de_nous.dart';
-import 'package:myapp00/drawerpage/notification.dart';
-import 'package:myapp00/drawerpage/parametre.dart';
-import 'package:myapp00/home/marketplace.dart';
 
-import '../../../../Authentication/Sign_in/sign_in.dart';
-import '../../../Client_screen/views/posts/posts.dart';
+import '../../../../OnBoarding/on_boarding_controller.dart';
+import '../../../Client_screen/views/about_us/about_us.dart';
 import '../centers/admin_centers.dart';
 import '../settings/settings.dart';
 
@@ -21,23 +17,12 @@ class HomePageAdmin extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<HomePageAdmin> {
+  static OnBoardingController controller = OnBoardingController();
+  var user = GetStorage().read("user");
   int currentIndex = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  List<Widget> screens = [
-    Posts(),
-    MarketplaceScreen(),
-    Settings(),
-    AdminCentersScreen()
-  ];
+
+  List<Widget> screens = [Settings(), AdminCentersScreen()];
   List<BottomNavyBarItem> items = [
-    BottomNavyBarItem(
-        inactiveColor: Colors.redAccent,
-        icon: Icon(Icons.home),
-        title: Text("Accuiel")),
-    BottomNavyBarItem(
-        inactiveColor: Colors.amber,
-        icon: Icon(Icons.storefront_sharp),
-        title: Text("Achats")),
     BottomNavyBarItem(
         inactiveColor: Colors.green.withOpacity(0.5),
         icon: ImageIcon(
@@ -153,33 +138,27 @@ class _BottomNavBarState extends State<HomePageAdmin> {
               child: ListView(padding: EdgeInsets.zero, children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: Constants.screenHeight * 0.1,
-                    backgroundImage: NetworkImage(
-                        "https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: Constants.screenHeight * 0.1,
+                          backgroundImage: NetworkImage("${user['Url']}"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "${user['userName']}",
+                          style: TextStyle(
+                              fontSize: Constants.screenHeight * 0.03,
+                              color: Colors.white,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Mes commandes',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  trailing:
-                      Icon(Icons.shopping_cart_sharp, color: Colors.white),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Mescmd()));
-                  },
-                ),
-                ListTile(
-                  title: const Text(
-                    'parametre',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Parametre()));
-                  },
                 ),
                 ListTile(
                   title: const Text(
@@ -200,15 +179,39 @@ class _BottomNavBarState extends State<HomePageAdmin> {
                     'Deconnecter',
                     style: TextStyle(color: Colors.white),
                   ),
-                  trailing: Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                  ),
+                  trailing: Icon(Icons.logout, color: Colors.white),
                   onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignInScreen()));
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Êtes-vous sure de déconnecter ?"),
+                            actions: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.redAccent.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Non"))),
+                              Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.blueAccent,
+                                  ),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        controller.Logout();
+                                      },
+                                      child: Text(
+                                        "Oui",
+                                        style: TextStyle(color: Colors.white),
+                                      ))),
+                            ],
+                          );
+                        });
                   },
                 ),
               ]),

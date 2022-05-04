@@ -6,6 +6,7 @@ class Cusers {
   String Role;
   String Email;
   String Url;
+  List basket;
 
   /*
 
@@ -18,15 +19,17 @@ class Cusers {
       required this.Email,
       required this.Gsm,
       required this.Role,
+      required this.basket,
       required this.Url});
-  factory Cusers.fromJson(Map<String, dynamic>? json) {
+  factory Cusers.fromJson(Map<String, dynamic> json) {
     return Cusers(
-      uid: json!["uid"],
+      uid: json["uid"],
       userName: json["userName"],
       Email: json["Email"],
       Role: json["Role"],
       Gsm: json["Gsm"],
       Url: json["Url"],
+      basket: json["basket"],
     );
   }
 // from object to json
@@ -37,7 +40,8 @@ class Cusers {
       "Email": Email,
       "Role": Role,
       "Url": Url,
-      "Gsm": Gsm
+      "Gsm": Gsm,
+      "basket": []
     };
   }
 }

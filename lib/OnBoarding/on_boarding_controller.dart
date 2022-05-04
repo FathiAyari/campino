@@ -19,7 +19,7 @@ class OnBoardingController extends GetxController {
 
   RememberClient(Map user) {
     var storage = GetStorage();
-    token(3);
+    token(2);
     storage.write("user", {
       'uid': user['uid'],
       'userName': user['userName'],
@@ -37,13 +37,14 @@ class OnBoardingController extends GetxController {
 
   token(int index) {
     var storage = GetStorage();
-    storage.write("auth", 1); // fama chkon 3mal login :)
+    storage.write("auth", 1);
     storage.write("type_auth", index);
   }
 
   Logout() async {
     var storage = GetStorage();
     storage.write("auth", 0);
+    storage.remove("user");
     Get.to(SignInScreen());
   }
 }

@@ -27,7 +27,7 @@ List<Content> contentList = [
   Content(
     img: 'images/location.json',
     description:
-        'Nous vous proposons un guide et  un espace de partge de vous experience en camping et et faire la reconnaissance avec des autres campeurs',
+        'Nous vous proposons un guide et  un espace de partge de vous experience en camping ',
     title: '',
   ),
   Content(
@@ -42,9 +42,17 @@ OnBoardingController onBoardingController = OnBoardingController();
 class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.indigo,
+                Colors.blueGrey,
+              ]),
+        ),
         child: Stack(
           children: [
             PageView.builder(
@@ -72,7 +80,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           ? Constants.screenWidth * 0.08
                           : Constants.screenWidth *
                               0.04, // condition au lieu de if else
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 30),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: Constants.screenHeight * 0.1),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: (index == currentPage)
@@ -82,8 +92,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   }),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Constants.screenWidth * 0.07, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
